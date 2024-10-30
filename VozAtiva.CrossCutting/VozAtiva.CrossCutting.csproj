@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VozAtiva.Application\VozAtiva.Application.csproj" />
+    <ProjectReference Include="..\VozAtiva.Domain\VozAtiva.Domain.csproj" />
+    <ProjectReference Include="..\VozAtiva.Infrastructure\VozAtiva.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\VozAtiva.Application\VozAtiva.Application.csproj" />
     <ProjectReference Include="..\VozAtiva.Domain\VozAtiva.Domain.csproj" />
     <ProjectReference Include="..\VozAtiva.Infrastructure\VozAtiva.Infrastructure.csproj" />

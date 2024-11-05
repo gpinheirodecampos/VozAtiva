@@ -2,13 +2,10 @@ using AutoMapper;
 using VozAtiva.Application.DTOs;
 using VozAtiva.Domain.Entities;
 
-namespace Rents.Application.DTOs.Mappings
-{
-    public class MappingProfile : Profile
+namespace VozAtiva.Application.DTOs.Mappings;
+public class MappingProfile : Profile {
+    public MappingProfile() 
     {
-        public MappingProfile() 
-        {
-            CreateMap<User, UserDTO>().ReverseMap();
-        }
+        CreateMap<User, UserDTO>().ReverseMap();
     }
 }

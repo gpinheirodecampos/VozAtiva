@@ -10,6 +10,8 @@ using VozAtiva.Application.DTOs;
 using VozAtiva.Application.Services.Interfaces;
 using VozAtiva.Domain.Entities;
 using VozAtiva.Domain.Interfaces;
+using PhoneNumbers;
+using RentAPI.Validations;
 
 namespace VozAtiva.Application.Services
 {
@@ -40,16 +42,30 @@ namespace VozAtiva.Application.Services
                                                                                                      || agent.Name == dto.Name
                                                                                                      || agent.Email == dto.Email
                                                                                                      || agent.Acronym == dto.Acronym
-                                                                                                     || agent.Phone == dto.Phone);
+                                                                                                     || agent.Phone == dto.Phone);      
 
             if (publicAgentExists != null)
             {
                 throw new Exception("public agent already registered");
             }
 
+            var phoneNumberValidator = PhoneNumberUtil.GetInstance();
+            var emailValidator = new EmailValidator();
+            var number = phoneNumberValidator.Parse(dto.Phone, "BR");
+
+            if (!phoneNumberValidator.IsValidNumber(number) )
+            {
+                throw new Exception("phone number must be in a valid format");
+            }
+
+            if (!emailValidator.IsValid(dto.Email))
+            {
+                throw new Exception("email must be in a valid format");
+            }
+
             var publicAgent = _mapper.Map<PublicAgent>(dto);
-            //TODO verify if email is in valid format, Acronym, and Phone.
             bool sucess = await _unitOfWork.PublicAgentRepository.AddAsync(publicAgent);
+            await _unitOfWork.CommitAsync();
 
             if (sucess) return dto;
             throw new Exception("failed to register public agent");
@@ -57,15 +73,26 @@ namespace VozAtiva.Application.Services
         }
         public async Task Update(PublicAgentDTO dto)
         {
-            var publicAgent = _mapper.Map<PublicAgent>(dto);
+            var phoneNumberValidator = PhoneNumberUtil.GetInstance();
+            var emailValidator = new EmailValidator();
+            var number = phoneNumberValidator.Parse(dto.Phone, "BR");
 
-            //TODO verify if email, acronym and phone is in correct format
+            if (!phoneNumberValidator.IsValidNumber(number))
+            {
+                throw new Exception("phone number must be in a valid format");
+            }
+
+            if (!emailValidator.IsValid(dto.Email))
+            {
+                throw new Exception("email must be in a valid format");
+            }
+
             var publicAgentExists = await _unitOfWork.PublicAgentRepository.GetByPropertyAsync(agent => agent.Id == dto.Id);
 
             if (publicAgentExists == null) throw new Exception("failed to update public agent. unmatched ID");
 
+            var publicAgent = _mapper.Map<PublicAgent>(dto);
             await _unitOfWork.PublicAgentRepository.UpdateAsync(publicAgent);
-
             await _unitOfWork.CommitAsync();
         }
         public async Task Delete(Guid id)
@@ -86,13 +113,18 @@ namespace VozAtiva.Application.Services
             var publicAgent = await _unitOfWork.PublicAgentRepository.GetByPropertyAsync(agent => agent.Name == name);
             return _mapper.Map<PublicAgentDTO>(publicAgent);
         }
-        public async Task<PublicAgentDTO> GetByAgentType(string type)
+        public async Task<PublicAgentDTO> GetByEmail(string email)
         {
-            /*
-            var publicAgent = await _unitOfWork.PublicAgentRepository.GetByPropertyAsync(agent => agent.Name == );
+            var emailValidator = new EmailValidator();
+
+            if (!emailValidator.IsValid(email))
+            {
+                throw new Exception("email must be in a valid format");
+            }
+
+            var publicAgent = await _unitOfWork.PublicAgentRepository.GetByPropertyAsync(agent => agent.Email == email);
             return _mapper.Map<PublicAgentDTO>(publicAgent);
-            */
-            return null;
+            
         }
     }
 }

@@ -11,5 +11,5 @@ namespace VozAtiva.Application.Services.Interfaces;
 public interface IPublicAgentService : IService<int, PublicAgentDTO>
 {
     public Task<PublicAgentDTO> GetByName(string name);
-    public Task<PublicAgentDTO> GetByAgentType(string type);
+    public Task<PublicAgentDTO> GetByEmail(string email);
 }

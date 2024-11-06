@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VozAtiva.Application.Services.Interfaces;
-using VozAtiva.Application.Services.DTOs;
+using VozAtiva.Application.DTOs;
 
 namespace VozAtiva.API.Controllers;
 
@@ -62,7 +62,7 @@ public class UserController : ControllerBase
 	[HttpPut("{id:Guid}")]
 	public async Task<ActionResult> Update(Guid id, UserDTO userDto)
 	{
-		if (id != userDto.UserId) 
+		if (id != userDto.Id) 
 		{ 
 			return BadRequest(); 
 		}

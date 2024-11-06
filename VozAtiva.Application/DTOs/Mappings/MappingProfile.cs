@@ -7,5 +7,6 @@ public class MappingProfile : Profile {
     public MappingProfile() 
     {
         CreateMap<User, UserDTO>().ReverseMap();
+        CreateMap<PublicAgent, PublicAgentDTO>().ReverseMap();
     }
 }

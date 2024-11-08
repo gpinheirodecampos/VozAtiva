@@ -8,5 +8,8 @@ public class MappingProfile : Profile {
     {
         CreateMap<User, UserDTO>().ReverseMap();
         CreateMap<PublicAgent, PublicAgentDTO>().ReverseMap();
+        CreateMap<Alert, AlertDTO>().ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User))
+                                    .ForMember(dest => dest.PublicAgent, opt => opt.MapFrom(src => src.PublicAgent))
+                                    .ReverseMap();
     }
 }

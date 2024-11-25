@@ -6,6 +6,8 @@ using VozAtiva.Infrastructure.Context;
 using VozAtiva.Infrastructure.Repository;
 using AutoMapper;
 using VozAtiva.Application.DTOs.Mappings;
+using VozAtiva.Application.Services.Interfaces;
+using VozAtiva.Application.Services;
 
 namespace VozAtiva.CrossCutting.IoC;
 
@@ -26,6 +28,10 @@ public static class DependencyInjectionAPI
         services.AddScoped<IImageRepository, ImageRepository>();
 
         services.AddScoped<IPublicAgentRepository, PublicAgentRepository>();
+
+        services.AddScoped<IUserService, UserService>();
+
+        services.AddScoped<IPublicAgentService, PublicAgentService>();
 
         var mappingConfig = new MapperConfiguration(mc =>
             {

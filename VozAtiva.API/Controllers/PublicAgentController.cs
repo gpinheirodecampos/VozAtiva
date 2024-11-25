@@ -11,26 +11,19 @@ namespace VozAtiva.API.Controllers;
 [Route("[controller]")]
 [ApiController]
 [Produces("application/json")]
-public class PublicAgentController : ControllerBase
+public class PublicAgentController(IPublicAgentService publicAgentService) : ControllerBase
 {
-    private readonly IPublicAgentService _publicAgentService;
-
-    public PublicAgentController(IPublicAgentService publicAgentService)
-    {
-        _publicAgentService = publicAgentService;
-    }
-
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var publicAgents = await _publicAgentService.GetAll();
+        var publicAgents = await publicAgentService.GetAll();
         return Ok(publicAgents);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var publicAgent = await _publicAgentService.GetById(id);
+        var publicAgent = await publicAgentService.GetById(id);
         if (publicAgent == null)
         {
             return NotFound();
@@ -48,7 +41,7 @@ public class PublicAgentController : ControllerBase
 
         try
         {
-            var createdPublicAgent = await _publicAgentService.Add(publicAgentDto);
+            var createdPublicAgent = await publicAgentService.Add(publicAgentDto);
             return CreatedAtAction(nameof(GetById), new { id = createdPublicAgent.Id }, createdPublicAgent);
         }
         catch (Exception ex)
@@ -57,8 +50,8 @@ public class PublicAgentController : ControllerBase
         }
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Put(int id, [FromBody] PublicAgentDTO publicAgentDto)
+    [HttpPut]
+    public async Task<IActionResult> Put([FromBody] PublicAgentDTO publicAgentDto)
     {
         if (!ModelState.IsValid)
         {
@@ -67,9 +60,8 @@ public class PublicAgentController : ControllerBase
 
         try
         {
-            publicAgentDto.Id = id;
-            await _publicAgentService.Update(publicAgentDto);
-            return NoContent();
+            await publicAgentService.Update(publicAgentDto);
+            return Ok("Órgão Público atualizado com sucesso!");
         }
         catch (Exception ex)
         {
@@ -78,11 +70,18 @@ public class PublicAgentController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete(int id)
     {
         try
         {
-            await _publicAgentService.Delete(id);
+            var agent = await publicAgentService.GetById(id);
+
+            if (agent == null)
+            {
+                return NotFound();
+            }
+
+            await publicAgentService.Delete(agent);
             return NoContent();
         }
         catch (Exception ex)
@@ -94,7 +93,7 @@ public class PublicAgentController : ControllerBase
     [HttpGet("name/{name}")]
     public async Task<IActionResult> GetByName(string name)
     {
-        var publicAgent = await _publicAgentService.GetByName(name);
+        var publicAgent = await publicAgentService.GetByName(name);
         if (publicAgent == null)
         {
             return NotFound();
@@ -107,7 +106,7 @@ public class PublicAgentController : ControllerBase
     {
         try
         {
-            var publicAgent = await _publicAgentService.GetByEmail(email);
+            var publicAgent = await publicAgentService.GetByEmail(email);
             if (publicAgent == null)
             {
                 return NotFound();

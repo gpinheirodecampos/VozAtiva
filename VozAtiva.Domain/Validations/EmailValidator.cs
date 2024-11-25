@@ -11,7 +11,7 @@ namespace RentAPI.Validations
                 return ValidationResult.Success;
             }
 
-            if (value.ToString().Contains("@") && value.ToString().Contains(".com"))
+            if (value.ToString().Contains('@') && value.ToString().Contains(".com"))
             {
                 return ValidationResult.Success;
             }

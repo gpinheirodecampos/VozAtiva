@@ -1,8 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using VozAtiva.Application.Services.Interfaces;
 using VozAtiva.Application.DTOs;
 
@@ -11,21 +7,14 @@ namespace VozAtiva.API.Controllers;
 [Route("[controller]")]
 [ApiController]
 [Produces("application/json")]
-public class UserController : ControllerBase 
+public class UserController(IUserService userService) : ControllerBase 
 {
-	private readonly IUserService _userService;
-
-	public UserController(IUserService userService) 
-	{
-		_userService = userService;
-	}
-
-	[HttpGet]
+    [HttpGet]
 	public async Task<ActionResult<IEnumerable<UserDTO>>> GetAll()
 	{
-		var users = await _userService.GetAll();
+		var users = await userService.GetAll();
 
-		if (users.Count() == 0) 
+		if (!users.Any()) 
 		{ 
 			return NotFound("Não há usuários cadastrados."); 
 		}
@@ -36,7 +25,7 @@ public class UserController : ControllerBase
 	[HttpGet("{id:Guid}", Name = "GetUserById")]
 	public async Task<ActionResult<UserDTO>> GetById(Guid id)
 	{
-		var user = await _userService.GetById(id);
+		var user = await userService.GetById(id);
 
 		if (user is null) 
 		{ 
@@ -54,20 +43,15 @@ public class UserController : ControllerBase
 			return BadRequest("Body não informado."); 
 		}
 
-		await _userService.Add(userDto);
+		await userService.Add(userDto);
 
 		return Ok("Usuário registrado com sucesso!");
 	}
 
-	[HttpPut("{id:Guid}")]
-	public async Task<ActionResult> Update(Guid id, UserDTO userDto)
+	[HttpPut]
+	public async Task<ActionResult> Update(UserDTO userDto)
 	{
-		if (id != userDto.Id) 
-		{ 
-			return BadRequest(); 
-		}
-
-		await _userService.Update(userDto);
+		await userService.Update(userDto);
 
 		return Ok(userDto);
 	}
@@ -75,22 +59,33 @@ public class UserController : ControllerBase
 	[HttpDelete("{id:Guid}")]
 	public async Task<ActionResult> Delete(Guid id)
 	{
-		var user = await _userService.GetById(id);
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var user = await userService.GetById(id);
 
 		if (user is null) 
 		{ 
 			return NotFound("Usuário não encontrado."); 
 		}
 
-		await _userService.Delete(id);
-
-		return Ok("Usuário removido com sucesso!");
+		try
+		{
+            await userService.Delete(user);
+            return Ok("Usuário removido com sucesso!");
+        }
+		catch (Exception ex)
+		{
+			return BadRequest(new { message = ex.Message });
+        }		
 	}
 
-	[HttpGet("{email}")]
+	[HttpGet("email/{email}")]
 	public async Task<ActionResult<UserDTO>> GetByEmail(string email)
 	{
-		var user = await _userService.GetByEmail(email);
+		var user = await userService.GetByEmail(email);
 
 		if (user is null) 
 		{ 
@@ -100,10 +95,10 @@ public class UserController : ControllerBase
 		return Ok(user);
 	}
 
-	[HttpGet("{federalCodeClient}")]
+	[HttpGet("document/{federalCodeClient}")]
 	public async Task<ActionResult<UserDTO>> GetByFederalCodeClient(string federalCodeClient)
 	{
-		var user = await _userService.GetByEmail(federalCodeClient);
+		var user = await userService.GetByEmail(federalCodeClient);
 
 		if (user is null) 
 		{ 
@@ -113,10 +108,10 @@ public class UserController : ControllerBase
 		return Ok(user);
 	}
 
-	[HttpGet("{phone}")]
+	[HttpGet("phone/{phone}")]
 	public async Task<ActionResult<UserDTO>> GetByPhone(string phone)
 	{
-		var user = await _userService.GetByEmail(phone);
+		var user = await userService.GetByEmail(phone);
 
 		if (user is null) 
 		{ 

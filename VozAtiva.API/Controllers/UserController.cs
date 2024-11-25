@@ -43,9 +43,16 @@ public class UserController(IUserService userService) : ControllerBase
 			return BadRequest("Body não informado."); 
 		}
 
-		await userService.Add(userDto);
+		try
+		{
+            await userService.Add(userDto);
 
-		return Ok("Usuário registrado com sucesso!");
+            return Ok("Usuário registrado com sucesso!");
+        }
+		catch(Exception ex)
+		{
+            return BadRequest(new { message = ex.Message });
+        }
 	}
 
 	[HttpPut]

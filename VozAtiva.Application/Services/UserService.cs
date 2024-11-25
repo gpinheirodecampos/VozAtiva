@@ -17,22 +17,27 @@ public class UserService(IUnitOfWork unitOfWork, IMapper mapper) : IUserService
         }
         
         var phoneNumberUtil = PhoneNumberUtil.GetInstance();
+
         var number = phoneNumberUtil.Parse(dto.Phone, "BR");
+
         if (!phoneNumberUtil.IsValidNumber(number)) {
             throw new Exception("Número de telefone inválido");
         }
-        if (GetByEmail(dto.Email) != null) {
+
+        if (await GetByEmail(dto.Email) != null) {
             throw new Exception("E-mail já cadastrado.");
         }
-        if (GetByFederalCodeClient(dto.FederalCodeClient) != null) {
+        if (await GetByFederalCodeClient(dto.FederalCodeClient) != null) {
             throw new Exception("CPF já cadastrado.");
         }
-        if (GetByPhone(dto.Phone) != null) {
+        if (await GetByPhone(dto.Phone) != null) {
             throw new Exception("Número de telefone já cadastrado.");
         }
 
         var user = mapper.Map<User>(dto);
+
         await unitOfWork.UserRepository.AddAsync(user);
+
         await unitOfWork.CommitAsync();
 
         return dto;
@@ -41,6 +46,7 @@ public class UserService(IUnitOfWork unitOfWork, IMapper mapper) : IUserService
     public async Task<IEnumerable<UserDTO>> GetAll()
     {
         var users = await unitOfWork.UserRepository.GetAllAsync();
+
         return mapper.Map <IEnumerable<UserDTO>>(users);
     }
 
@@ -48,7 +54,9 @@ public class UserService(IUnitOfWork unitOfWork, IMapper mapper) : IUserService
     {
         var user = await unitOfWork.UserRepository.GetByPropertyAsync(usr => usr.Email == email);
 
-        return mapper.Map <UserDTO> (user);
+        var userDto = mapper.Map<UserDTO>(user);
+
+        return userDto;
     }
 
     public async Task<UserDTO> GetByFederalCodeClient(string FederalCodeClient)
@@ -75,14 +83,18 @@ public class UserService(IUnitOfWork unitOfWork, IMapper mapper) : IUserService
     public async Task Update(UserDTO dto)
     {
         var user = mapper.Map<User>(dto);
+
         await unitOfWork.UserRepository.UpdateAsync(user);
+
         await unitOfWork.CommitAsync();
     }
 
     public async Task Delete(UserDTO dto)
     {
         var user = mapper.Map<User>(dto);
+
         await unitOfWork.UserRepository.DeleteAsync(user);
+
         await unitOfWork.CommitAsync();
     }
 }

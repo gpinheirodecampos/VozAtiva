@@ -12,6 +12,7 @@ using VozAtiva.Domain.Entities;
 using VozAtiva.Domain.Interfaces;
 using PhoneNumbers;
 using RentAPI.Validations;
+using System.Runtime.CompilerServices;
 
 namespace VozAtiva.Application.Services
 {
@@ -26,10 +27,16 @@ namespace VozAtiva.Application.Services
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+
+        public IUnitOfWork GetUnitOfWork()
+        {
+            return _unitOfWork;
+        }
+
         public async Task<IEnumerable<PublicAgentDTO>> GetAll()
         {
-            var publilAgentList = await _unitOfWork.PublicAgentRepository.GetAllAsync();
-            return _mapper.Map<List<PublicAgentDTO>>(publilAgentList);
+            var publicAgentList = await _unitOfWork.PublicAgentRepository.GetAllAsync();
+            return _mapper.Map<List<PublicAgentDTO>>(publicAgentList);
         }
         public async Task<PublicAgentDTO> GetById(int id)
         {
@@ -53,6 +60,11 @@ namespace VozAtiva.Application.Services
             var emailValidator = new EmailValidator();
             var number = phoneNumberValidator.Parse(dto.Phone, "BR");
 
+            if(publicAgentExists != null && publicAgentExists.Id == dto.Id)
+            {
+                throw new Exception("ID matched with that of another Public Agent");
+            }
+
             if (!phoneNumberValidator.IsValidNumber(number) )
             {
                 throw new Exception("phone number must be in a valid format");
@@ -65,9 +77,12 @@ namespace VozAtiva.Application.Services
 
             var publicAgent = _mapper.Map<PublicAgent>(dto);
             bool sucess = await _unitOfWork.PublicAgentRepository.AddAsync(publicAgent);
-            await _unitOfWork.CommitAsync();
 
-            if (sucess) return dto;
+            if (sucess) 
+            {
+                await _unitOfWork.CommitAsync();
+                return dto;
+            }
             throw new Exception("failed to register public agent");
 
         }

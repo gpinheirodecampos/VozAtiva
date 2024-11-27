@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore; 
+using Microsoft.EntityFrameworkCore;
 using VozAtiva.Domain.Entities;
 using VozAtiva.Domain.Entities.Types;
 

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using VozAtiva.CrossCutting.IoC;
 using VozAtiva.Infrastructure.Context;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddInfrastructureAPI(builder.Configuration);
+
+
+
+// Registrando servico Identity
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
 
 var app = builder.Build();
 

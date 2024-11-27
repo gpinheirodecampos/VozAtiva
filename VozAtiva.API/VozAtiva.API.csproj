@@ -16,6 +16,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\VozAtiva.CrossCutting\VozAtiva.CrossCutting.csproj" />
+    <ProjectReference Include="..\VozAtiva.Infrastructure\VozAtiva.Infrastructure.csproj" />
+
   </ItemGroup>
 
   <ItemGroup>

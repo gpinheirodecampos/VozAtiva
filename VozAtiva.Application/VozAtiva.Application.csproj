@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <Folder Include="DTOs\Mappings\" />
-    <Folder Include="Services\Interfaces\" />
+	  <Folder Include="Services\Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>

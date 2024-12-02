@@ -11,6 +11,11 @@ namespace VozAtiva.Application.Services
 {
     public class PublicAgentService(IUnitOfWork unitOfWork, IMapper mapper) : IPublicAgentService
     {
+
+        public IUnitOfWork GetUnitOfWork()
+        {
+            return unitOfWork;
+        }
         public async Task<IEnumerable<PublicAgentDTO>> GetAll()
         {
             var publilAgentList = await unitOfWork.PublicAgentRepository.GetAllAsync();
@@ -83,8 +88,9 @@ namespace VozAtiva.Application.Services
             }
 
             var publicAgentExists = await unitOfWork.PublicAgentRepository.GetByPropertyAsync(agent => agent.Id == dto.Id) ?? throw new Exception("failed to update public agent. unmatched ID");
-            var publicAgent = mapper.Map<PublicAgent>(dto);
-            await unitOfWork.PublicAgentRepository.UpdateAsync(publicAgent);
+            //var publicAgent = mapper.Map<PublicAgent>(dto);
+            publicAgentExists.Name = dto.Name;
+            await unitOfWork.PublicAgentRepository.UpdateAsync(publicAgentExists);
             await unitOfWork.CommitAsync();
         }
         public async Task Delete(PublicAgentDTO dto)

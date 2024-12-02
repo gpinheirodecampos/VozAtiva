@@ -47,7 +47,6 @@ public class PublicAgentServiceTest : ServiceTestsBase<PublicAgentService>
         await _service.Add(_mapper.Map<PublicAgentDTO>(pa1));
         await _service.Add(_mapper.Map<PublicAgentDTO>(pa2));
         var agents = await _service.GetAll();
-        Console.WriteLine("Agents counter : "+agents.Count());
         agents.Should().NotBeNull();
         agents.Should().NotBeEmpty();
         agents.Should().HaveCount(2);
@@ -77,10 +76,6 @@ public class PublicAgentServiceTest : ServiceTestsBase<PublicAgentService>
         result2.Should().BeOfType<PublicAgentDTO>();
         (result2.Id).Should().Be(id);
 
-        Console.WriteLine("Add_Agent_OK");
-        Console.WriteLine(result.Name);
-        Console.WriteLine(result2.Name);
-
     }
 
     [Fact]
@@ -96,8 +91,6 @@ public class PublicAgentServiceTest : ServiceTestsBase<PublicAgentService>
             AgentTypeId = 1
         };
         await _service.Add(_mapper.Map<PublicAgentDTO>(pa));
-        //await _service.Add(_mapper.Map<PublicAgentDTO>(pa));
-
         Func<Task> result = async () => await _service.Add(_mapper.Map<PublicAgentDTO>(pa));
         await result.Should().ThrowAsync<Exception>();
             
@@ -110,7 +103,7 @@ public class PublicAgentServiceTest : ServiceTestsBase<PublicAgentService>
         {
             Id = 47,
             Name = "ISPM",
-            Email = "fundas@mail.com",       //incorrectly formated phone number
+            Email = "fundas@mail.com", 
             Phone = "121",
             Acronym = "ISPM",
             AgentTypeId = 1

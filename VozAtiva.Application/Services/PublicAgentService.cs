@@ -5,15 +5,22 @@ using VozAtiva.Domain.Entities;
 using VozAtiva.Domain.Interfaces;
 using PhoneNumbers;
 using RentAPI.Validations;
+using System.Runtime.CompilerServices;
 
 namespace VozAtiva.Application.Services
 {
     public class PublicAgentService(IUnitOfWork unitOfWork, IMapper mapper) : IPublicAgentService
     {
+
+        public IUnitOfWork GetUnitOfWork()
+        {
+            return unitOfWork;
+        }
         public async Task<IEnumerable<PublicAgentDTO>> GetAll()
         {
             var publilAgentList = await unitOfWork.PublicAgentRepository.GetAllAsync();
             return mapper.Map<List<PublicAgentDTO>>(publilAgentList);
+
         }
         public async Task<PublicAgentDTO> GetById(int id)
         {
@@ -37,6 +44,11 @@ namespace VozAtiva.Application.Services
             var emailValidator = new EmailValidator();
             var number = phoneNumberValidator.Parse(dto.Phone, "BR");
 
+            if(publicAgentExists != null && publicAgentExists.Id == dto.Id)
+            {
+                throw new Exception("ID matched with that of another Public Agent");
+            }
+
             if (!phoneNumberValidator.IsValidNumber(number) )
             {
                 throw new Exception("phone number must be in a valid format");
@@ -51,7 +63,11 @@ namespace VozAtiva.Application.Services
             bool sucess = await unitOfWork.PublicAgentRepository.AddAsync(publicAgent);
             await unitOfWork.CommitAsync();
 
-            if (sucess) return dto;
+            if (sucess) 
+            {
+                await unitOfWork.CommitAsync();
+                return dto;
+            }
             throw new Exception("failed to register public agent");
 
         }
@@ -72,8 +88,9 @@ namespace VozAtiva.Application.Services
             }
 
             var publicAgentExists = await unitOfWork.PublicAgentRepository.GetByPropertyAsync(agent => agent.Id == dto.Id) ?? throw new Exception("failed to update public agent. unmatched ID");
-            var publicAgent = mapper.Map<PublicAgent>(dto);
-            await unitOfWork.PublicAgentRepository.UpdateAsync(publicAgent);
+            //var publicAgent = mapper.Map<PublicAgent>(dto);
+            publicAgentExists.Name = dto.Name;
+            await unitOfWork.PublicAgentRepository.UpdateAsync(publicAgentExists);
             await unitOfWork.CommitAsync();
         }
         public async Task Delete(PublicAgentDTO dto)

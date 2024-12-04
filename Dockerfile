@@ -7,6 +7,8 @@ WORKDIR /app
 COPY VozAtiva.API/VozAtiva.API.csproj VozAtiva.API/
 COPY VozAtiva.Application/VozAtiva.Application.csproj VozAtiva.Application/
 COPY VozAtiva.CrossCutting/VozAtiva.CrossCutting.csproj VozAtiva.CrossCutting/
+COPY VozAtiva.Domain/VozAtiva.Domain.csproj VozAtiva.Domain/
+COPY VozAtiva.Infrastructure/VozAtiva.Infrastructure.csproj VozAtiva.Infrastructure/
 
 RUN dotnet restore VozAtiva.API/VozAtiva.API.csproj
 

@@ -12,4 +12,5 @@ public interface IPublicAgentService : IService<int, PublicAgentDTO>
 {
     public Task<PublicAgentDTO> GetByName(string name);
     public Task<PublicAgentDTO> GetByEmail(string email);
+
 }

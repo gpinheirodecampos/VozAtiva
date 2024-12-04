@@ -105,7 +105,7 @@ public class AlertController(IAlertService alertService) : ControllerBase
     }
 
     [HttpGet("title/{title}")]
-    public async Task<ActionResult<IEnumerable<AlertDTO>>> GetByTitle(string title)
+    public async Task<ActionResult<AlertDTO>> GetByTitle(string title)
     {
         var alert = await alertService.GetByTitle(title);
 

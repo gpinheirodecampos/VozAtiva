@@ -17,7 +17,7 @@ public static class DependencyInjectionAPI
         IConfiguration configuration)
     {
         services.AddDbContext<AppDbContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+            options.UseNpgsql("DATABASE_URL"));
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 

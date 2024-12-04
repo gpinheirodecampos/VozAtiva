@@ -90,4 +90,9 @@ public class AlertService : IAlertService
 
     return (IEnumerable<AlertDTO>)_mapper.Map<AlertDTO>(alerts);
   }
+
+    public Task Delete(AlertDTO dto)
+    {
+        throw new NotImplementedException();
+    }
 }

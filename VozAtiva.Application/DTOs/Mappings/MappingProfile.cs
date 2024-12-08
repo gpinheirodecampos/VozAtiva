@@ -1,5 +1,4 @@
 using AutoMapper;
-using VozAtiva.Application.DTOs;
 using VozAtiva.Domain.Entities;
 
 namespace VozAtiva.Application.DTOs.Mappings;

@@ -4,6 +4,16 @@ using VozAtiva.Infrastructure.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowExpoClient", policy =>
+    {
+        policy.WithOrigins("http://localhost:8081") // Replace with your Expo frontend URL
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -23,6 +33,8 @@ var app = builder.Build();
 //}
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowExpoClient");
 
 app.UseAuthorization();
 

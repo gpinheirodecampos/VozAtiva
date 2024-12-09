@@ -33,6 +33,8 @@ public static class DependencyInjectionAPI
 
         services.AddScoped<IPublicAgentService, PublicAgentService>();
 
+        services.AddScoped<IAlertService, AlertService>();
+
         var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MappingProfile());

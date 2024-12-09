@@ -18,7 +18,7 @@ public class AlertController(IAlertService alertService) : ControllerBase
         {
             return NotFound("Nenhum alerta encontrado.");
         }
-
+        
         return Ok(alerts);
     } 
 

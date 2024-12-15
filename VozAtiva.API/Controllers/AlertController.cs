@@ -52,7 +52,7 @@ public class AlertController(IAlertService alertService) : ControllerBase
         try
         {
             var createdAlert = await alertService.Add(alertDto);
-            return CreatedAtAction(nameof(GetById), new { id = createdAlert.Id }, createdAlert);
+            return Ok("Alerta criado com sucesso!");
         }
         catch (Exception ex)
         {

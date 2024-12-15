@@ -24,8 +24,8 @@ public class AlertControllerTests
     {
         var alerts = new List<AlertDTO>
         {
-            new AlertDTO( Guid.NewGuid(), "Alert 1", "This is the description for Alert 1", DateTime.Now, Guid.NewGuid(), 1, 1, "Open", "Location 1", "Additional details for Alert 1", null, null ),
-            new AlertDTO( Guid.NewGuid(), "Alert 2", "This is the description for Alert 2", DateTime.Now.AddDays(-1), Guid.NewGuid(), 2, 2, "Closed", "Location 2", "Additional details for Alert 2", null, null  )
+            new (Guid.NewGuid(),"Alert 1", "This is the description for Alert 1", DateTime.Now, Guid.NewGuid(), 1, 1, 1.03, 2.05, VozAtiva.Domain.Enums.AlertStatusEnum.Pending),
+            new (Guid.NewGuid(),"Alert 2", "This is the description for Alert 2", DateTime.Now, Guid.NewGuid(), 1, 1, 1.03, 2.05, VozAtiva.Domain.Enums.AlertStatusEnum.Pending)
         };
         _mockAlertService.Setup(s => s.GetAll()).ReturnsAsync(alerts);
 

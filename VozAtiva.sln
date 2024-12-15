@@ -3,17 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VozAtiva.API", "VozAtiva.API\VozAtiva.API.csproj", "{10BEC277-DE22-4BE6-B496-8619206F985A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VozAtiva.API", "VozAtiva.API\VozAtiva.API.csproj", "{10BEC277-DE22-4BE6-B496-8619206F985A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VozAtiva.Tests", "VozAtiva.Tests\VozAtiva.Tests.csproj", "{39F22C0E-EA40-4595-8678-4B83A093A6EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VozAtiva.Tests", "VozAtiva.Tests\VozAtiva.Tests.csproj", "{39F22C0E-EA40-4595-8678-4B83A093A6EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VozAtiva.Domain", "VozAtiva.Domain\VozAtiva.Domain.csproj", "{521CB4E9-A245-4377-B19E-2190AE5D71DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VozAtiva.Domain", "VozAtiva.Domain\VozAtiva.Domain.csproj", "{521CB4E9-A245-4377-B19E-2190AE5D71DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VozAtiva.Application", "VozAtiva.Application\VozAtiva.Application.csproj", "{7B7BB0D9-783C-47E2-B212-2081D707545D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VozAtiva.Application", "VozAtiva.Application\VozAtiva.Application.csproj", "{7B7BB0D9-783C-47E2-B212-2081D707545D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VozAtiva.Infrastructure", "VozAtiva.Infrastructure\VozAtiva.Infrastructure.csproj", "{187EEA0B-2724-48AB-8950-9A19A3B9372F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VozAtiva.Infrastructure", "VozAtiva.Infrastructure\VozAtiva.Infrastructure.csproj", "{187EEA0B-2724-48AB-8950-9A19A3B9372F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VozAtiva.CrossCutting", "VozAtiva.CrossCutting\VozAtiva.CrossCutting.csproj", "{D622347F-3D6A-4C0C-B0F7-37C6124231F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VozAtiva.CrossCutting", "VozAtiva.CrossCutting\VozAtiva.CrossCutting.csproj", "{D622347F-3D6A-4C0C-B0F7-37C6124231F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VozAtiva.Function", "VozAtiva.Function\VozAtiva.Function.csproj", "{3131A475-4C83-41A5-B1C4-CA539FAE6DA5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{D622347F-3D6A-4C0C-B0F7-37C6124231F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D622347F-3D6A-4C0C-B0F7-37C6124231F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D622347F-3D6A-4C0C-B0F7-37C6124231F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3131A475-4C83-41A5-B1C4-CA539FAE6DA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3131A475-4C83-41A5-B1C4-CA539FAE6DA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3131A475-4C83-41A5-B1C4-CA539FAE6DA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3131A475-4C83-41A5-B1C4-CA539FAE6DA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -10,7 +10,7 @@ namespace VozAtiva.API.Controllers;
 [Produces("application/json")]
 public class UserController(IUserService userService) : ControllerBase 
 {
-    [Authorize]
+    //[Authorize]
     [HttpGet]
 	public async Task<ActionResult<IEnumerable<UserDTO>>> GetAll()
 	{

@@ -51,6 +51,11 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+// Configurar logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
 builder.Services.AddInfrastructureAPI(builder.Configuration);
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()

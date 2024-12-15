@@ -8,6 +8,7 @@ using AutoMapper;
 using VozAtiva.Application.DTOs.Mappings;
 using VozAtiva.Application.Services.Interfaces;
 using VozAtiva.Application.Services;
+using Microsoft.Extensions.Logging;
 
 namespace VozAtiva.CrossCutting.IoC;
 
@@ -18,6 +19,11 @@ public static class DependencyInjectionAPI
     {
         services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+
+        services.AddSingleton<ISendEmailService, SendEmailService>(provider =>
+        {
+            return new SendEmailService(configuration.GetConnectionString("AzureWebJobsStorage")!, provider.GetRequiredService<ILogger<SendEmailService>>());
+        });
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 

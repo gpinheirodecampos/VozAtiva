@@ -1,19 +1,6 @@
-using VozAtiva.Domain.Entities;
+using System.Text.Json.Serialization;
 using VozAtiva.Domain.Enums;
 
 namespace VozAtiva.Application.DTOs;
 
-public record AlertDTO(
-    Guid Id,
-    string Title,
-    string Description,
-    DateTime Date,
-    Guid UserId,
-    int PublicAgentId,
-    int AlertTypeId,
-    string Status,
-    string Latitude,
-    string Longitude,
-    UserDTO? User,
-    PublicAgentDTO? PublicAgent
-);
+public record AlertDTO(Guid Id, string Title, string Description, DateTime Date, Guid UserId, int PublicAgentId, int AlertTypeId, double Latitude, double Longitude, AlertStatusEnum Status);

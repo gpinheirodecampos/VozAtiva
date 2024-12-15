@@ -5,10 +5,10 @@ using VozAtiva.Domain.Entities.Types;
 
 namespace VozAtiva.Infrastructure.Context;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<ApplicationUser>(options)
 {
     public DbSet<Alert> Alerts { get; set; } = null!;
-    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<User> User { get; set; } = null!;
     public DbSet<PublicAgent> PublicAgents { get; set; } = null!;
     public DbSet<Image> Images { get; set; } = null!;
     public DbSet<AgentType> AgentTypes { get; set; } = null!;
@@ -16,6 +16,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<User>(entity =>
         {
             entity.Property(e => e.Id)

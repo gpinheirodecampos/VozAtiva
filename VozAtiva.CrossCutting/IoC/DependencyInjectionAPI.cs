@@ -35,6 +35,8 @@ public static class DependencyInjectionAPI
 
         services.AddScoped<IAlertService, AlertService>();
 
+        services.AddScoped<ITokenService, TokenService>();
+
         var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MappingProfile());

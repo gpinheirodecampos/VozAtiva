@@ -20,7 +20,7 @@ public class Alert : BaseEntity
     public int AlertTypeId { get; set; }
     public AlertStatusEnum Status { get; set; }
     public double Latitude { get; set; }
-    public double Longitute { get; set; }
+    public double Longitude { get; set; }
 
     // navigation properties
     public User User { get; set; } = null!;

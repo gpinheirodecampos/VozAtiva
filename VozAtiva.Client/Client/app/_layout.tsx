@@ -4,7 +4,7 @@ export default function RootLayout() {
     return (
         <Stack>
             <Stack.Screen name="index" />
-            <Stack.Screen name="example" />
+            <Stack.Screen name="Geolocation/latitude/longitude/latRange/longRange" />
         </Stack>
     );
 }

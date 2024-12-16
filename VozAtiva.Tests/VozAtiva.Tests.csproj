@@ -7,7 +7,6 @@
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-    <StartupObject>VozAtiva.Tests.Services.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

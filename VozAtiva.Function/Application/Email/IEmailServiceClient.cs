@@ -6,7 +6,7 @@ namespace VozAtiva.Function.Application.Email
 {
     public interface IEmailServiceClient
     {
-        [Post("/send-email")]
+        [Post("/sendemail/gov/new-alert")]
         Task SendEmailAsync([Body] SendEmailMessage message);
     }
 }

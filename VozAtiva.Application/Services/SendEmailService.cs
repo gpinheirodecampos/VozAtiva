@@ -28,7 +28,7 @@ public class SendEmailService(string connectionString, ILogger logger) : ISendEm
 
             var message = new SendEmailMessage
             {
-                AlertId = alertId,
+                AlertId = alertId.ToString(),
                 Name = name,
                 Email = email
             };

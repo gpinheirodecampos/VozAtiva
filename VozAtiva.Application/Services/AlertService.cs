@@ -6,18 +6,18 @@ using VozAtiva.Domain.Entities;
 
 namespace VozAtiva.Application.Services;
 
-public class AlertService(IUnitOfWork unitOfWork, IMapper mapper, ISendEmailService emailService) : IAlertService 
+public class AlertService(IUnitOfWork unitOfWork, IMapper mapper, ISendEmailService emailService) : IAlertService
 {
     public async Task<IEnumerable<AlertDTO>> GetAll()
     {
         var alerts = await unitOfWork.AlertRepository.GetAllAsync();
-        return mapper.Map <IEnumerable<AlertDTO>>(alerts);
+        return mapper.Map<IEnumerable<AlertDTO>>(alerts);
     }
 
     public async Task<AlertDTO> GetById(Guid id)
     {
         var alert = await unitOfWork.AlertRepository.GetByPropertyAsync(a => a.Id == id);
-    
+
         return mapper.Map<AlertDTO>(alert);
     }
 
@@ -73,14 +73,14 @@ public class AlertService(IUnitOfWork unitOfWork, IMapper mapper, ISendEmailServ
 
         return (IEnumerable<AlertDTO>)mapper.Map<AlertDTO>(alerts);
     }
-  
+
     public async Task<IEnumerable<AlertDTO>> GetByPublicAgentId(int PublicAgentId)
     {
         var alerts = await unitOfWork.AlertRepository.GetByConditionAsync(a => a.PublicAgentId == PublicAgentId);
 
         return (IEnumerable<AlertDTO>)mapper.Map<AlertDTO>(alerts);
     }
-  
+
     public async Task<IEnumerable<AlertDTO>> GetByAlertTypeId(int AlertTypeId)
     {
         var alerts = await unitOfWork.AlertRepository.GetByConditionAsync(a => a.AlertTypeId == AlertTypeId);
@@ -94,4 +94,23 @@ public class AlertService(IUnitOfWork unitOfWork, IMapper mapper, ISendEmailServ
 
         await unitOfWork.AlertRepository.DeleteAsync(alert);
     }
+
+    public async Task<IEnumerable<AlertDTO>> GetByCoordinateRangeAroundPoint(double latitude, double longitude, double latRange, double longRange)
+    {
+        var alerts = await unitOfWork.AlertRepository
+            .GetByConditionAsync(alert => (alert.Latitude < alert.Latitude + latRange)
+                                        && (alert.Latitude > alert.Latitude - latRange)
+                                        && (alert.Longitude < alert.Longitude + longRange)
+                                        && (alert.Longitude > alert.Longitude - longRange));
+
+        return mapper.Map<IEnumerable<AlertDTO>>(alerts);
+    }
+
+    public async Task<IEnumerable<AlertDTO>> GetByCoordinateRange(double latMin, double latMax, double longMin, double longMax)
+    {
+        var alerts = await unitOfWork.AlertRepository.GetByPropertyAsync(a => (a.Latitude < latMax && a.Latitude > latMin)
+                                                                            && (a.Longitude < longMax && a.Longitude > longMin));
+        return mapper.Map<IEnumerable<AlertDTO>>(alerts);
+    }
+
 }

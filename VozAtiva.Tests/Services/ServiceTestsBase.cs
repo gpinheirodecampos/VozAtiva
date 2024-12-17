@@ -27,8 +27,8 @@ namespace VozAtiva.Tests.Services
 
             _context = new AppDbContext(dbContextOptions);
 
-            DatabaseInitializer.Reinitialize(dbContextOptions);
-            DatabaseInitializer.Initialize(dbContextOptions);
+            //DatabaseInitializer.Reinitialize(dbContextOptions);
+            //DatabaseInitializer.Initialize(dbContextOptions);
 
             _mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<MappingProfile>()));
             _unitOfWork = new UnitOfWork(_context);

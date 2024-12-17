@@ -12,7 +12,7 @@ namespace VozAtiva.API.Controllers;
 public class GeolocationController(IAlertService alertService) : ControllerBase
 {
 
-    [HttpGet("GetByCoordinateRangeAroundPoint/{latitude : double}/{longitude : double}/{latRange : double}/{longRange : double}")]
+    [HttpGet("GetByCoordinateRangeAroundPoint/{latitude}/{longitude}/{latRange}/{longRange}")]
     public async Task<ActionResult<IEnumerable<AlertDTO>>> GetAlertsInCoordinateRangeAroundPoint(double latitude, double longitude, double latRange, double longRange)
     {
         var alerts = await alertService.GetByCoordinateRangeAroundPoint(latitude, longitude, latRange, longRange);
@@ -20,7 +20,7 @@ public class GeolocationController(IAlertService alertService) : ControllerBase
         return Ok(alerts);
     }
 
-    [HttpGet("GetByCoordinateRange/{latMin : double}/{latMax : double}/{longMin : double}/{longMax : double}")]
+    [HttpGet("GetByCoordinateRange/{latMin}/{latMax}/{longMin}/{longMax}")]
     public async Task<ActionResult<IEnumerable<AlertDTO>>> GetAlertsInCoordinateRange(double latitude, double longitude, double latRange, double longRange)
     {
         var alerts = await alertService.GetByCoordinateRange(latitude, longitude, latRange, longRange);

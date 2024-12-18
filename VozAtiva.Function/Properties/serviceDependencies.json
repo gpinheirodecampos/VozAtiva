@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "appInsights1": {
+      "type": "appInsights"
+    },
+    "storage1": {
+      "type": "storage",
+      "connectionId": "AzureWebJobsStorage"
+    },
+    "secrets1": {
+      "type": "secrets"
+    },
+    "storage2": {
+      "type": "storage",
+      "connectionId": "DefaultEndpointsProtocol=https;AccountName=vozativastorage;AccountKey=GP2NXaUvWVW9Wg:w5R6Zc:cRViyn9kXYXEt9pxqp7:LttSj8noKaKSEdbeNr1kz+Uhbo4l0HAUd1+ASt7S4mVQ==;EndpointSuffix=core.windows.net",
+      "dynamicId": null
+    }
+  }
+}

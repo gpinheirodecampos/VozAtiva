@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using VozAtiva.Application.Services.Interfaces;
 using VozAtiva.Application.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace VozAtiva.API.Controllers;
 
@@ -9,6 +10,7 @@ namespace VozAtiva.API.Controllers;
 [Produces("application/json")]
 public class UserController(IUserService userService) : ControllerBase 
 {
+    //[Authorize]
     [HttpGet]
 	public async Task<ActionResult<IEnumerable<UserDTO>>> GetAll()
 	{

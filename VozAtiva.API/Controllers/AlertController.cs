@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using VozAtiva.Application.Services.Interfaces;
 using VozAtiva.Application.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace VozAtiva.API.Controllers;
 
@@ -18,11 +19,11 @@ public class AlertController(IAlertService alertService) : ControllerBase
         {
             return NotFound("Nenhum alerta encontrado.");
         }
-
+        
         return Ok(alerts);
     } 
 
-    [HttpGet("{id:int}", Name = "GetAlertById")]
+    [HttpGet("{id:Guid}", Name = "GetAlertById")]
     public async Task<ActionResult<AlertDTO>> GetById(Guid id)
     {
         var alert = await alertService.GetById(id);
@@ -51,7 +52,7 @@ public class AlertController(IAlertService alertService) : ControllerBase
         try
         {
             var createdAlert = await alertService.Add(alertDto);
-            return CreatedAtAction(nameof(GetById), new { id = createdAlert.Id }, createdAlert);
+            return Ok("Alerta criado com sucesso!");
         }
         catch (Exception ex)
         {
@@ -83,7 +84,7 @@ public class AlertController(IAlertService alertService) : ControllerBase
         }
     }
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{id:Guid}")]
     public async Task<ActionResult> Delete(Guid id)
     {
         var alert = await alertService.GetById(id);

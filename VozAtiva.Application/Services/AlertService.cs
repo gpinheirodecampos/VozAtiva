@@ -6,93 +6,111 @@ using VozAtiva.Domain.Entities;
 
 namespace VozAtiva.Application.Services;
 
-public class AlertService : IAlertService 
+public class AlertService(IUnitOfWork unitOfWork, IMapper mapper, ISendEmailService emailService) : IAlertService
 {
-  private readonly IMapper _mapper;
-  private readonly IUnitOfWork _unitOfWork;
-
-  public AlertService(IUnitOfWork unitOfWork, IMapper mapper)
-  {
-    _unitOfWork = unitOfWork;
-    _mapper = mapper;
-  }
-
-  public async Task<IEnumerable<AlertDTO>> GetAll()
-  {
-    var alerts = await _unitOfWork.AlertRepository.GetAllAsync();
-    return _mapper.Map <IEnumerable<AlertDTO>>(alerts);
-  }
-
-  public async Task<AlertDTO> GetById(Guid id)
-  {
-    var alert = await _unitOfWork.AlertRepository.GetByPropertyAsync(a => a.Id == id);
-    
-    return _mapper.Map<AlertDTO>(alert);
-  }
-
-  public async Task<AlertDTO> Add(AlertDTO dto)
-  {
-    if (GetByPublicAgentId(dto.PublicAgentId) == null)
+    public async Task<IEnumerable<AlertDTO>> GetAll()
     {
-      throw new Exception("Id do agente publico não encontrado.");
+        var alerts = await unitOfWork.AlertRepository.GetAllAsync();
+        return mapper.Map<IEnumerable<AlertDTO>>(alerts);
     }
 
-    if (GetByAlertTypeId(dto.AlertTypeId) == null)
+    public async Task<AlertDTO> GetById(Guid id)
     {
-      throw new Exception("Id do tipo de alerta não encontrado.");
+        var alert = await unitOfWork.AlertRepository.GetByPropertyAsync(a => a.Id == id);
+
+        return mapper.Map<AlertDTO>(alert);
     }
 
-    var alert = _mapper.Map<Alert>(dto);
-    await _unitOfWork.AlertRepository.AddAsync(alert);
-    await _unitOfWork.CommitAsync();
-
-    return dto;
-  }
-
-  public async Task Update(AlertDTO dto)
-  {
-    var alert = _mapper.Map<Alert>(dto);
-    await _unitOfWork.AlertRepository.UpdateAsync(alert);
-    await _unitOfWork.CommitAsync();
-  }
-
-  public async Task Delete(Guid id)
-  {
-    var alert = await _unitOfWork.AlertRepository.GetByPropertyAsync(a => a.Id == id);
-    await _unitOfWork.AlertRepository.DeleteAsync(alert);
-    await _unitOfWork.CommitAsync();
-  }
-
-  public async Task<AlertDTO> GetByTitle(string Title)
-  {
-    var alert = await _unitOfWork.AlertRepository.GetByPropertyAsync(a => a.Title == Title);
-
-    return _mapper.Map<AlertDTO>(alert);
-  }
-
-  public async Task<IEnumerable<AlertDTO>> GetByDate(DateTime Date)
-  {
-    var alerts = await _unitOfWork.AlertRepository.GetByConditionAsync(a => a.Date == Date);
-
-    return (IEnumerable<AlertDTO>)_mapper.Map<AlertDTO>(alerts);
-  }
-  
-  public async Task<IEnumerable<AlertDTO>> GetByPublicAgentId(int PublicAgentId)
-  {
-    var alerts = await _unitOfWork.AlertRepository.GetByConditionAsync(a => a.PublicAgentId == PublicAgentId);
-
-    return (IEnumerable<AlertDTO>)_mapper.Map<AlertDTO>(alerts);
-  }
-  
-  public async Task<IEnumerable<AlertDTO>> GetByAlertTypeId(int AlertTypeId)
-  {
-    var alerts = await _unitOfWork.AlertRepository.GetByConditionAsync(a => a.AlertTypeId == AlertTypeId);
-
-    return (IEnumerable<AlertDTO>)_mapper.Map<AlertDTO>(alerts);
-  }
-
-    public Task Delete(AlertDTO dto)
+    public async Task<AlertDTO> Add(AlertDTO dto)
     {
-        throw new NotImplementedException();
+        if (GetByPublicAgentId(dto.PublicAgentId) == null)
+        {
+            throw new Exception("Id do agente publico não encontrado.");
+        }
+
+        if (GetByAlertTypeId(dto.AlertTypeId) == null)
+        {
+            throw new Exception("Id do tipo de alerta não encontrado.");
+        }
+
+        var alert = mapper.Map<Alert>(dto);
+
+        await unitOfWork.AlertRepository.AddAsync(alert);
+
+        await unitOfWork.CommitAsync();
+
+        var user = await unitOfWork.UserRepository.GetByPropertyAsync(u => u.Id == alert.UserId);
+
+        await emailService.EnqueueSendEmailAsync(alert.Id, user.Name, user.Email);
+
+        return dto;
     }
+
+    public async Task Update(AlertDTO dto)
+    {
+        var alert = mapper.Map<Alert>(dto);
+        await unitOfWork.AlertRepository.UpdateAsync(alert);
+        await unitOfWork.CommitAsync();
+    }
+
+    public async Task Delete(Guid id)
+    {
+        var alert = await unitOfWork.AlertRepository.GetByPropertyAsync(a => a.Id == id);
+        await unitOfWork.AlertRepository.DeleteAsync(alert);
+        await unitOfWork.CommitAsync();
+    }
+
+    public async Task<AlertDTO> GetByTitle(string Title)
+    {
+        var alert = await unitOfWork.AlertRepository.GetByPropertyAsync(a => a.Title == Title);
+
+        return mapper.Map<AlertDTO>(alert);
+    }
+
+    public async Task<IEnumerable<AlertDTO>> GetByDate(DateTime Date)
+    {
+        var alerts = await unitOfWork.AlertRepository.GetByConditionAsync(a => a.Date == Date);
+
+        return (IEnumerable<AlertDTO>)mapper.Map<AlertDTO>(alerts);
+    }
+
+    public async Task<IEnumerable<AlertDTO>> GetByPublicAgentId(int PublicAgentId)
+    {
+        var alerts = await unitOfWork.AlertRepository.GetByConditionAsync(a => a.PublicAgentId == PublicAgentId);
+
+        return (IEnumerable<AlertDTO>)mapper.Map<AlertDTO>(alerts);
+    }
+
+    public async Task<IEnumerable<AlertDTO>> GetByAlertTypeId(int AlertTypeId)
+    {
+        var alerts = await unitOfWork.AlertRepository.GetByConditionAsync(a => a.AlertTypeId == AlertTypeId);
+
+        return (IEnumerable<AlertDTO>)mapper.Map<AlertDTO>(alerts);
+    }
+
+    public async Task Delete(AlertDTO dto)
+    {
+        var alert = await unitOfWork.AlertRepository.GetByPropertyAsync(a => a.Id == dto.Id) ?? throw new Exception("Alerta não encontrado.");
+
+        await unitOfWork.AlertRepository.DeleteAsync(alert);
+    }
+
+    public async Task<IEnumerable<AlertDTO>> GetByCoordinateRangeAroundPoint(double latitude, double longitude, double latRange, double longRange)
+    {
+        var alerts = await unitOfWork.AlertRepository
+            .GetByConditionAsync(alert => (alert.Latitude < alert.Latitude + latRange)
+                                        && (alert.Latitude > alert.Latitude - latRange)
+                                        && (alert.Longitude < alert.Longitude + longRange)
+                                        && (alert.Longitude > alert.Longitude - longRange));
+
+        return mapper.Map<IEnumerable<AlertDTO>>(alerts);
+    }
+
+    public async Task<IEnumerable<AlertDTO>> GetByCoordinateRange(double latMin, double latMax, double longMin, double longMax)
+    {
+        var alerts = await unitOfWork.AlertRepository.GetByPropertyAsync(a => (a.Latitude < latMax && a.Latitude > latMin)
+                                                                            && (a.Longitude < longMax && a.Longitude > longMin));
+        return mapper.Map<IEnumerable<AlertDTO>>(alerts);
+    }
+
 }

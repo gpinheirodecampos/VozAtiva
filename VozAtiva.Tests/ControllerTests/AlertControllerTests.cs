@@ -6,6 +6,7 @@ using Moq;
 using VozAtiva.API.Controllers;
 using VozAtiva.Application.DTOs;
 using VozAtiva.Application.Services.Interfaces;
+using VozAtiva.Domain.Enums;
 using Xunit;
 
 public class AlertControllerTests
@@ -24,8 +25,8 @@ public class AlertControllerTests
     {
         var alerts = new List<AlertDTO>
         {
-            new AlertDTO( Guid.NewGuid(), "Alert 1", "This is the description for Alert 1", DateTime.Now, Guid.NewGuid(), 1, 1, "Open", "Location 1", "Additional details for Alert 1", null, null ),
-            new AlertDTO( Guid.NewGuid(), "Alert 2", "This is the description for Alert 2", DateTime.Now.AddDays(-1), Guid.NewGuid(), 2, 2, "Closed", "Location 2", "Additional details for Alert 2", null, null  )
+            new (Guid.NewGuid(),"Alert 1", "This is the description for Alert 1", DateTime.Now, Guid.NewGuid(), 1, 1, 1.03, 2.05, VozAtiva.Domain.Enums.AlertStatusEnum.Pending),
+            new (Guid.NewGuid(),"Alert 2", "This is the description for Alert 2", DateTime.Now, Guid.NewGuid(), 1, 1, 1.03, 2.05, VozAtiva.Domain.Enums.AlertStatusEnum.Pending)
         };
         _mockAlertService.Setup(s => s.GetAll()).ReturnsAsync(alerts);
 
@@ -50,7 +51,7 @@ public class AlertControllerTests
     public async Task GetById_ShouldReturnOk_WhenAlertExists()
     {
         var alertId = Guid.NewGuid();
-        var alert = new AlertDTO( alertId, "Alert 1", "This is the description for Alert 1", DateTime.Now, Guid.NewGuid(), 1, 1, "Open", "Location 1", "Additional details for Alert 1", null, null );
+        var alert = new AlertDTO( alertId, "Alert 1", "This is the description for Alert 1", DateTime.Now, Guid.NewGuid(), 1, 1, 13, 75, AlertStatusEnum.Pending);
         _mockAlertService.Setup(s => s.GetById(alertId)).ReturnsAsync(alert);
 
         var result = await _controller.GetById(alertId);
@@ -74,7 +75,7 @@ public class AlertControllerTests
     [Fact]
     public async Task Create_ShouldReturnCreated_WhenAlertIsCreated()
     {
-        var alertDto = new AlertDTO(Guid.NewGuid(), "Alert 1", "This is the description for Alert 1", DateTime.Now, Guid.NewGuid(), 1, 1, "Open", "Location 1", "Additional details for Alert 1", null, null );
+        var alertDto = new AlertDTO(Guid.NewGuid(), "Alert 1", "This is the description for Alert 1", DateTime.Now, Guid.NewGuid(), 1, 1, 16 , 14, AlertStatusEnum.Pending);
         _mockAlertService.Setup(s => s.Add(alertDto)).ReturnsAsync(alertDto);
 
         var result = await _controller.Create(alertDto);
@@ -97,7 +98,7 @@ public class AlertControllerTests
     public async Task GetByTitle_ReturnsAlert_WhenAlertExist()
     {
         var title = "Test Alert";
-        var alert = new AlertDTO(Guid.NewGuid(), title, "Description 1", DateTime.Now, Guid.NewGuid(), 1, 1, "Open", "Location 1", "Details 1", null, null);
+        var alert = new AlertDTO(Guid.NewGuid(), title, "Description 1", DateTime.Now, Guid.NewGuid(), 1, 1, 18, 19, AlertStatusEnum.Pending);
 
         _mockAlertService.Setup(s => s.GetByTitle(title)).ReturnsAsync(alert);
 
@@ -111,7 +112,7 @@ public class AlertControllerTests
     [Fact]
     public async Task Update_ReturnsOk_WhenUpdateIsSuccessful()
     {
-        var alertToUpdate = new AlertDTO(Guid.NewGuid(), "Alert 1", "Description 1", DateTime.Now, Guid.NewGuid(), 1, 1, "Open", "Location 1", "Details 1", null, null);
+        var alertToUpdate = new AlertDTO(Guid.NewGuid(), "Alert 1", "Description 1", DateTime.Now, Guid.NewGuid(), 1, 1, 25.9, 23.1, AlertStatusEnum.Pending);
 
         _mockAlertService.Setup(s => s.Update(alertToUpdate)).Returns(Task.CompletedTask);
 
@@ -134,7 +135,7 @@ public class AlertControllerTests
     public async Task Delete_ReturnsOk_WhenDeleteIsSuccessful()
     {
         var alertId = Guid.NewGuid();
-        var alert = new AlertDTO(alertId, "Alert 1", "Description 1", DateTime.Now, Guid.NewGuid(), 1, 1, "Open", "Location 1", "Details 1", null, null);
+        var alert = new AlertDTO(alertId, "Alert 1", "Description 1", DateTime.Now, Guid.NewGuid(), 1, 1, 45.3 , 93.2 ,AlertStatusEnum.Pending);
 
         _mockAlertService.Setup(s => s.GetById(alertId)).ReturnsAsync(alert);
         _mockAlertService.Setup(s => s.Delete(alert)).Returns(Task.CompletedTask);
@@ -174,8 +175,8 @@ public class AlertControllerTests
         var date = DateTime.Now.Date;
         var alerts = new List<AlertDTO>
         {
-            new AlertDTO(Guid.NewGuid(), "Alert 1", "Description 1", date, Guid.NewGuid(), 1, 1, "Open", "Location 1", "Details 1", null, null),
-            new AlertDTO(Guid.NewGuid(), "Alert 2", "Description 2", date, Guid.NewGuid(), 1, 1, "Open", "Location 2", "Details 2", null, null)
+            new AlertDTO(Guid.NewGuid(), "Alert 1", "Description 1", date, Guid.NewGuid(), 1, 1, 48.7, 63.8 , AlertStatusEnum.Pending),
+            new AlertDTO(Guid.NewGuid(), "Alert 2", "Description 2", date, Guid.NewGuid(), 1, 1, 41.2, 38.9, AlertStatusEnum.Pending)
         };
 
         _mockAlertService.Setup(s => s.GetByDate(date)).ReturnsAsync(alerts);

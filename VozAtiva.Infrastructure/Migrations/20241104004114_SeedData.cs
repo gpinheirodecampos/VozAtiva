@@ -52,11 +52,11 @@ namespace VozAtiva.Infrastructure.Migrations
                 columns: ["Id", "Name", "Email", "FederalCodeClient", "Birthdate", "Phone", "UserType", "CreatedAt", "UpdatedAt", "Active", "Disabled"],
                 values: new object[,]
                 {
-                    { Guid.NewGuid(), "Alice Santos", "alice.santos@example.com", "12345678901", new DateTime(1990, 5, 12), "11987654321", (int)UserTypeEnum.Admin, DateTime.Now, DateTime.Now, true, false },
-                    { Guid.NewGuid(), "Bruno Silva", "bruno.silva@example.com", "10987654321", new DateTime(1985, 7, 23), "11976543210", (int)UserTypeEnum.User, DateTime.Now, DateTime.Now, true, false },
-                    { Guid.NewGuid(), "Carla Almeida", "carla.almeida@example.com", "11223344556", new DateTime(1993, 3, 8), "11965432109", (int)UserTypeEnum.User, DateTime.Now, DateTime.Now, true, false },
-                    { Guid.NewGuid(), "Diego Ferreira", "diego.ferreira@example.com", "22334455667", new DateTime(1982, 10, 17), "11954321098", (int)UserTypeEnum.Admin, DateTime.Now, DateTime.Now, true, false },
-                    { Guid.NewGuid(), "Eva Lima", "eva.lima@example.com", "33445566778", new DateTime(1995, 12, 1), "11943210987", (int)UserTypeEnum.User, DateTime.Now, DateTime.Now, true, false }
+                    { Guid.Parse("11111111-1111-1111-1111-111111111111"), "Alice Santos", "alice.santos@example.com", "12345678901", new DateTime(1990, 5, 12), "11987654321", (int)UserTypeEnum.Admin, DateTime.Now, DateTime.Now, true, false },
+                    { Guid.Parse("22222222-2222-2222-2222-222222222222"), "Bruno Silva", "bruno.silva@example.com", "10987654321", new DateTime(1985, 7, 23), "11976543210", (int)UserTypeEnum.User, DateTime.Now, DateTime.Now, true, false },
+                    { Guid.Parse("33333333-3333-3333-3333-333333333333"), "Carla Almeida", "carla.almeida@example.com", "11223344556", new DateTime(1993, 3, 8), "11965432109", (int)UserTypeEnum.User, DateTime.Now, DateTime.Now, true, false },
+                    { Guid.Parse("44444444-4444-4444-4444-444444444444"), "Diego Ferreira", "diego.ferreira@example.com", "22334455667", new DateTime(1982, 10, 17), "11954321098", (int)UserTypeEnum.Admin, DateTime.Now, DateTime.Now, true, false },
+                    { Guid.Parse("55555555-5555-5555-5555-555555555555"), "Eva Lima", "eva.lima@example.com", "33445566778", new DateTime(1995, 12, 1), "11943210987", (int)UserTypeEnum.User, DateTime.Now, DateTime.Now, true, false }
                 }
             );
 

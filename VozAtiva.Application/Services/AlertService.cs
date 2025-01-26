@@ -113,4 +113,18 @@ public class AlertService(IUnitOfWork unitOfWork, IMapper mapper, ISendEmailServ
         return mapper.Map<IEnumerable<AlertDTO>>(alerts);
     }
 
+    public async Task<IEnumerable<AlertDTO>> GetAlertsWithinDistance(double lat, double lon, double distance)
+    {
+        //1 degree of latitude is 111km
+        //1 degre of longitude is 111km also
+        double distInLatitude = distance / 222;
+        double KmPerLongitudeUnit = 111 - (111*(Math.Abs(lat)/90));
+        double distInLongitude = distance / KmPerLongitudeUnit;
+        IEnumerable<Alert> alerts = await unitOfWork.AlertRepository.GetAllAsync();
+        IEnumerable<Alert> filteredAlerts = alerts.Where(alert => (alert.Latitude < lat + distInLatitude) && (alert.Latitude > lat - distInLatitude)).ToList();
+        Console.WriteLine($"AlertService::::distInLatitude:{distInLatitude} disInLongitude: {distInLongitude} KmPerLongitude: {KmPerLongitudeUnit} " +
+            $"lat + distInLatitude :{lat + distInLatitude} lat - distInLongitude: {lat - distInLongitude}");
+        return mapper.Map<IEnumerable<AlertDTO>>(filteredAlerts);
+    }
+
 }

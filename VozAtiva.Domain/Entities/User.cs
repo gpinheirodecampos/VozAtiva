@@ -10,7 +10,12 @@ public class User : BaseEntity
     public required string Name { get; set; }
     public required string Email { get; set; }
     public required string FederalCodeClient { get; set; }
-    public required DateTime Birthdate { get; set; }
+    public DateTime Birthdate
+    {
+        get => _birthdate;
+        set => _birthdate = DateTime.SpecifyKind(value, DateTimeKind.Unspecified);
+    }
+    private DateTime _birthdate;
     public required string Phone { get; set; }
     public required UserTypeEnum UserType { get; set; }
 

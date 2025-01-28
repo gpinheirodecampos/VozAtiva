@@ -1,0 +1,8 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "",
+    "EmailServiceBaseUrl": "https://f8d9-201-75-187-177.ngrok-free.app/notification/v1",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
+  }
+}

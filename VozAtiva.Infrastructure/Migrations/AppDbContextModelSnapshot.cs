@@ -219,7 +219,7 @@ namespace VozAtiva.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("alert");
+                    b.ToTable("alert", (string)null);
                 });
 
             modelBuilder.Entity("VozAtiva.Domain.Entities.ApplicationUser", b =>
@@ -327,7 +327,7 @@ namespace VozAtiva.Infrastructure.Migrations
 
                     b.HasIndex("AlertId");
 
-                    b.ToTable("image");
+                    b.ToTable("image", (string)null);
                 });
 
             modelBuilder.Entity("VozAtiva.Domain.Entities.PublicAgent", b =>
@@ -358,7 +358,7 @@ namespace VozAtiva.Infrastructure.Migrations
 
                     b.HasIndex("AgentTypeId");
 
-                    b.ToTable("public_agent");
+                    b.ToTable("public_agent", (string)null);
                 });
 
             modelBuilder.Entity("VozAtiva.Domain.Entities.Types.AgentType", b =>
@@ -378,7 +378,7 @@ namespace VozAtiva.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("agent_type");
+                    b.ToTable("agent_type", (string)null);
                 });
 
             modelBuilder.Entity("VozAtiva.Domain.Entities.Types.AlertType", b =>
@@ -398,7 +398,7 @@ namespace VozAtiva.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("alert_type");
+                    b.ToTable("alert_type", (string)null);
                 });
 
             modelBuilder.Entity("VozAtiva.Domain.Entities.User", b =>
@@ -453,7 +453,7 @@ namespace VozAtiva.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("user");
+                    b.ToTable("user", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

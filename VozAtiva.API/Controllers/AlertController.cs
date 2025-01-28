@@ -130,4 +130,13 @@ public class AlertController(IAlertService alertService) : ControllerBase
 
         return Ok(alerts);
     }
+
+    [HttpGet("GetByDistance/{lat:double}/{lon:double}/{distance:double}")]
+    public async Task<ActionResult<IEnumerable<AlertDTO>>> GetByDistance(double lat, double lon, double distance)
+    {
+        var alerts = await alertService.GetByDistance(lat, lon, distance);
+        if (!alerts.Any()) return NotFound("No alerts were found in the specified range");
+        Console.WriteLine(alerts.Count());
+        return Ok(alerts);
+    }
 }

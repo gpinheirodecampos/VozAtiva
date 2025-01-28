@@ -94,7 +94,6 @@ public class AlertService(IUnitOfWork unitOfWork, IMapper mapper, ISendEmailServ
 
         await unitOfWork.AlertRepository.DeleteAsync(alert);
     }
-
     public async Task<IEnumerable<AlertDTO>> GetByCoordinateRangeAroundPoint(double latitude, double longitude, double latRange, double longRange)
     {
         var alerts = await unitOfWork.AlertRepository
@@ -113,17 +112,23 @@ public class AlertService(IUnitOfWork unitOfWork, IMapper mapper, ISendEmailServ
         return mapper.Map<IEnumerable<AlertDTO>>(alerts);
     }
 
-    public async Task<IEnumerable<AlertDTO>> GetAlertsWithinDistance(double lat, double lon, double distance)
+    public async Task<IEnumerable<AlertDTO>> GetByDistance(double lat, double lon, double distance)
     {
-        //1 degree of latitude is 111km
-        //1 degre of longitude is 111km also
+        if (lat < -90 || lat > 90)
+        {
+            throw new Exception("Latitude fora do intervalo permitido");
+        }
+        if (lon < -180 || lon > 180)
+        {
+            throw new Exception("Longitude fora do intervalo");
+        }
         double distInLatitude = distance / 222;
         double KmPerLongitudeUnit = 111 - (111*(Math.Abs(lat)/90));
         double distInLongitude = distance / KmPerLongitudeUnit;
         IEnumerable<Alert> alerts = await unitOfWork.AlertRepository.GetAllAsync();
-        IEnumerable<Alert> filteredAlerts = alerts.Where(alert => (alert.Latitude < lat + distInLatitude) && (alert.Latitude > lat - distInLatitude)).ToList();
-        Console.WriteLine($"AlertService::::distInLatitude:{distInLatitude} disInLongitude: {distInLongitude} KmPerLongitude: {KmPerLongitudeUnit} " +
-            $"lat + distInLatitude :{lat + distInLatitude} lat - distInLongitude: {lat - distInLongitude}");
+        IEnumerable<Alert> filteredAlerts = alerts.Where(alert => (alert.Latitude < lat + distInLatitude) && (alert.Latitude > lat - distInLatitude)
+                                                                    && (alert.Longitude < lon + distInLongitude) && (alert.Longitude > lon - distInLongitude)).ToList();
+        /*IEnumerable<Alert> filteredAlerts = alerts.Where(a => (Math.Pow(a.Latitude - lat,2) + Math.Pow(a.Longitude - lon,2)) <= Math.Pow(distance,2));*/
         return mapper.Map<IEnumerable<AlertDTO>>(filteredAlerts);
     }
 

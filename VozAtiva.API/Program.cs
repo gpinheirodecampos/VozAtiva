@@ -99,7 +99,7 @@ var app = builder.Build();
     dbContext.Database.Migrate();
 //}
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseCors("AllowExpoClient");
 

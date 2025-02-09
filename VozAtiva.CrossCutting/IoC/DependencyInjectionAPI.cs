@@ -18,7 +18,7 @@ public static class DependencyInjectionAPI
         IConfiguration configuration)
     {
         services.AddDbContext<AppDbContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+            options.UseNpgsql(configuration["ConnectionStrings:ProdConnection"]));
 
         services.AddSingleton<ISendEmailService, SendEmailService>(provider =>
         {

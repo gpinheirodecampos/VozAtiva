@@ -1,41 +1,27 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
+# Step 1: Build Stage (using SDK image)
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
-ENV DOTNET_CLI_HOME=/tmp
-ENV PATH /usr/local/bin:$PATH
+WORKDIR /source
 
-WORKDIR /app
-COPY VozAtiva.API/VozAtiva.API.csproj VozAtiva.API/
-COPY VozAtiva.Application/VozAtiva.Application.csproj VozAtiva.Application/
-COPY VozAtiva.CrossCutting/VozAtiva.CrossCutting.csproj VozAtiva.CrossCutting/
-
-RUN dotnet restore VozAtiva.API/VozAtiva.API.csproj
-
+# Copy only the .csproj files to restore dependencies first
 COPY . .
 
-FROM base AS build
+# Restore dependencies
+RUN dotnet restore "./VozAtiva.API/VozAtiva.API.csproj"
+RUN dotnet publish "./VozAtiva.API/VozAtiva.API.csproj" -c Release -o /app --no-restore
 
-RUN dotnet publish VozAtiva.API/VozAtiva.API.csproj -c Release -o /app/publish
+# Step 2: Runtime Stage (using ASP.NET runtime image)
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 
-# Etapas relacionadas a testes e cobertura comentadas
-# FROM base AS build_coverages
-# 
-# RUN apt-get update -qq && apt-get install -qq --no-install-recommends -y \
-#     make \
-#     && dotnet tool install --global coverlet.console \
-#     && dotnet tool install --global dotnet-reportgenerator-globaltool \
-#     && dotnet tool install --global dotnet-format
-# 
-# RUN dotnet restore VozAtiva.Tests/VozAtiva.Tests.csproj
-# RUN dotnet build VozAtiva.Tests/VozAtiva.Tests.csproj
-# RUN dotnet test VozAtiva.Tests/VozAtiva.Tests.csproj --collect:"Code Coverage" --no-build
-# RUN reportgenerator "-reports:/app/VozAtiva.Tests/TestResults/*.xml" "-targetdir:/app/coverage" -reporttypes:Html
-# RUN dotnet format VozAtiva.API/VozAtiva.API.csproj --check
-
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+#ENV ASPNETCORE_HTTP_PORT=https://+:5001
+ENV ASPNETCORE_URLS=http://+:5000;
 
 WORKDIR /app
-COPY --from=build /app/publish .
+COPY --from=build /app ./
 
-EXPOSE 80
+EXPOSE 5000
 
+# Set the entry point to run the published application
 ENTRYPOINT ["dotnet", "VozAtiva.API.dll"]
+
+#To run container we use the command  docker run -p 5000:5000 -p 5001:5001 -e ASPNETCORE_HTTP_PORT=https://+:5001 -e ASPNETCORE_URLS=http://+:5000 hanyerkek/vozativa

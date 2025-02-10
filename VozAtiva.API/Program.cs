@@ -14,7 +14,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowExpoClient", policy =>
     {
-        policy.WithOrigins("http://localhost:8081") // Replace with your Expo frontend URL
+        policy.WithOrigins("http://localhost:3000") // Replace with your Expo frontend URL
               .AllowAnyHeader()
               .AllowAnyMethod();
     });

@@ -37,11 +37,11 @@ public class AlertService(IUnitOfWork unitOfWork, IMapper mapper, ISendEmailServ
 
         await unitOfWork.AlertRepository.AddAsync(alert);
 
-        await unitOfWork.CommitAsync();
+        //await unitOfWork.CommitAsync();
 
-        var user = await unitOfWork.UserRepository.GetByPropertyAsync(u => u.Id == alert.UserId);
+        //var user = await unitOfWork.UserRepository.GetByPropertyAsync(u => u.Id == alert.UserId);
 
-        await emailService.EnqueueSendEmailAsync(alert.Id, user.Name, user.Email);
+        //await emailService.EnqueueSendEmailAsync(alert.Id, user.Name, user.Email);
 
         return dto;
     }

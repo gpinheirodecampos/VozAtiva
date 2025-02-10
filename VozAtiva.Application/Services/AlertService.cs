@@ -23,26 +23,15 @@ public class AlertService(IUnitOfWork unitOfWork, IMapper mapper, ISendEmailServ
 
     public async Task<AlertDTO> Add(AlertDTO dto)
     {
-        if (GetByPublicAgentId(dto.PublicAgentId) == null)
-        {
-            throw new Exception("Id do agente publico não encontrado.");
-        }
-
-        if (GetByAlertTypeId(dto.AlertTypeId) == null)
-        {
-            throw new Exception("Id do tipo de alerta não encontrado.");
-        }
-
         var alert = mapper.Map<Alert>(dto);
 
         await unitOfWork.AlertRepository.AddAsync(alert);
 
-        //await unitOfWork.CommitAsync();
+        await unitOfWork.CommitAsync();
 
-        //var user = await unitOfWork.UserRepository.GetByPropertyAsync(u => u.Id == alert.UserId);
+        var user = await unitOfWork.UserRepository.GetByPropertyAsync(u => u.Id == alert.UserId);
 
-        //await emailService.EnqueueSendEmailAsync(alert.Id, user.Name, user.Email);
-
+        await emailService.EnqueueSendEmailAsync(alert.Id, user.Name, user.Email);
         return dto;
     }
 

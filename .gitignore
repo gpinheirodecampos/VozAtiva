@@ -3,7 +3,6 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-VozAtiva.API/appsettings.json
 VozAtiva.API/Properties/serviceDependencies.json
 VozAtiva.API/Properties/serviceDependencies.vozativa - Zip Deploy.json
 

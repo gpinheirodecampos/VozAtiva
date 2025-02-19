@@ -2,5 +2,5 @@
 
 public interface ISendEmailService
 {
-    Task EnqueueSendEmailAsync(Guid alertId, string name, string email);
+    Task EnqueueSendEmailAsync(Guid alertId, string name, string email, string title);
 }

@@ -8,7 +8,7 @@ namespace VozAtiva.Application.Services;
 
 public class SendEmailService(string connectionString, ILogger logger) : ISendEmailService
 {
-    public async Task EnqueueSendEmailAsync(Guid alertId, string name, string email)
+    public async Task EnqueueSendEmailAsync(Guid alertId, string name, string email, string title)
     {
         logger.LogInformation("EnqueueSendEmailAsync called with AlertId: {AlertId}, Name: {Name}, Email: {Email}", alertId, name, email);
 
@@ -30,7 +30,8 @@ public class SendEmailService(string connectionString, ILogger logger) : ISendEm
             {
                 AlertId = alertId.ToString(),
                 Name = name,
-                Email = email
+                Email = email,
+                Title = title
             };
 
             // Serializar para JSON

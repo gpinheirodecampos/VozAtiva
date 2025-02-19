@@ -10,4 +10,6 @@ public class SendEmailMessage
     public string? Name { get; set; }
     [JsonPropertyName("email")]
     public string? Email { get; set; }
+    [JsonPropertyName("title")]
+    public string? Title { get; set; }
 }

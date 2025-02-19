@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text.Json.Serialization;
-using static System.Windows.Forms.AxHost;
+﻿using System.Text.Json.Serialization;
 
 namespace VozAtiva.Function.Models
 {
@@ -12,5 +10,7 @@ namespace VozAtiva.Function.Models
         public string Name { get; set; }
         [JsonPropertyName("email")]
         public string Email { get; set; }
+        [JsonPropertyName("title")]
+        public string Title { get; set; }
     }
 }

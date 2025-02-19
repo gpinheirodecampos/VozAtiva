@@ -31,7 +31,7 @@ public class AlertService(IUnitOfWork unitOfWork, IMapper mapper, ISendEmailServ
 
         var user = await unitOfWork.UserRepository.GetByPropertyAsync(u => u.Id == alert.UserId);
 
-        await emailService.EnqueueSendEmailAsync(alert.Id, user.Name, user.Email);
+        await emailService.EnqueueSendEmailAsync(alert.Id, user.Name, user.Email, alert.Title);
         return dto;
     }
 

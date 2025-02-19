@@ -1,8 +1,8 @@
 {
   "IsEncrypted": false,
   "Values": {
-    "AzureWebJobsStorage": "",
-    "EmailServiceBaseUrl": "https://f8d9-201-75-187-177.ngrok-free.app/notification/v1",
+    "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=vozativastorage;AccountKey=GP2NXaUvWVW9Wg/w5R6Zc/cRViyn9kXYXEt9pxqp7/LttSj8noKaKSEdbeNr1kz+Uhbo4l0HAUd1+ASt7S4mVQ==;EndpointSuffix=core.windows.net;",
+    "EmailServiceBaseUrl": "https://vozativa-systemmessage-production.up.railway.app/notification/v1",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
   }
 }
